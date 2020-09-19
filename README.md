@@ -1,0 +1,2 @@
+# CodigosRandom
+Te servirá quizá.
