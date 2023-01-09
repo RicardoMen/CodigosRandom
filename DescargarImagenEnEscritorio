@@ -1,0 +1,47 @@
+using System.Collections;
+using System.Collections.Generic;
+using System.IO;
+using UnityEngine;
+
+public class Donwload : MonoBehaviour
+{
+    public string imageUrl;
+    public string savePath = "G:\\PSP";
+    public string folderName = "Test";
+
+    void Start()
+    {
+        StartCoroutine(DownloadImage());
+    }
+
+    IEnumerator DownloadImage()
+    {
+        WWW www = new WWW(imageUrl);
+        yield return www;
+
+        Texture2D texture = www.texture;
+        byte[] bytes;
+        string fileExtension = Path.GetExtension(imageUrl).ToLower();
+        if (fileExtension == ".jpg" || fileExtension == ".jpeg")
+        {
+            bytes = texture.EncodeToJPG();
+        }
+        else if (fileExtension == ".png")
+        {
+            bytes = texture.EncodeToPNG();
+        }
+        else
+        {
+            Debug.LogError("Unsupported image file type: " + fileExtension);
+            yield break;
+        }
+
+        string folderPath = Path.Combine(savePath, folderName);
+        if (!Directory.Exists(folderPath))
+        {
+            Directory.CreateDirectory(folderPath);
+        }
+
+        File.WriteAllBytes(Path.Combine(folderPath, "image" + fileExtension), bytes);
+    }
+}
