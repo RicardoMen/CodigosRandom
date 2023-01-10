@@ -1,0 +1,50 @@
+using UnityEngine;
+using UnityEngine.Networking;
+using UnityEngine.Android;
+using System.IO;
+using System.Collections;
+
+
+
+public class ImageDownloader : MonoBehaviour
+{
+    // URL de la imagen a descargar
+    public string imageUrl = "https://www.example.com/image.jpg";
+
+    void Start()
+    {
+        // Iniciar la descarga de la imagen en un hilo separado
+
+    }
+    public void Descarga()
+    {
+        StartCoroutine(DownloadAndSaveImage());
+
+    }
+
+    IEnumerator DownloadAndSaveImage()
+    {
+        // Iniciar la descarga de la imagen
+        WWW www = new WWW(imageUrl);
+
+        // Esperar a que la descarga termine
+        yield return www;
+
+        // Verificar si se produjo algún error al descargar la imagen
+        if (string.IsNullOrEmpty(www.error))
+        {
+            // Obtener el byte array de la imagen descargada
+            byte[] imageBytes = www.bytes;
+
+            //NativeGallery.Permission permission = NativeGallery.SaveImageToGallery(imageBytes, "Gallery", "image.jpg");
+
+            NativeGallery.Permission imagePath = NativeGallery.SaveImageToGallery(imageBytes, "Gallery", "image.jpg");
+
+            if (imagePath != null)
+            {
+                Debug.Log("Imagen guardada en: " + imagePath);
+            }
+       
+        }
+    }
+}
