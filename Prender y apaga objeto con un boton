@@ -1,0 +1,11 @@
+using UnityEngine;
+
+public class ButtonToggle : MonoBehaviour
+{
+    public GameObject objectToToggle;
+
+    public void ToggleObject()
+    {
+        objectToToggle.SetActive(!objectToToggle.activeSelf);
+    }
+}
