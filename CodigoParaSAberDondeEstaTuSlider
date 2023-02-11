@@ -1,0 +1,27 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+
+public class RuedaController : MonoBehaviour
+{
+    public Slider MySlider;
+    public PanelDeBotones PanelbotonesScript;
+    public List<Text> TextoRueda;
+    public Text textoEscogido;  
+  
+  
+  
+  public void CambioValorRueda()
+    {
+        float ValorActualRueda = MySlider.value;
+
+        for (int i = 0; i < TextoRueda.Count;i++)
+        {
+           if( ValorActualRueda == TextoRueda.IndexOf(TextoRueda[i])) 
+            {
+                textoEscogido = TextoRueda[i];
+            }
+            
+        }
+    }
