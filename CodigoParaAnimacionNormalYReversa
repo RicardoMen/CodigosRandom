@@ -1,0 +1,81 @@
+using UnityEngine;
+
+public class AnimationController : MonoBehaviour
+{
+    Animator anim;
+    float speed = 0.1f; // Velocidad inicial
+    float acceleration = 0.1f; // Aceleración al presionar las teclas
+    bool accelerating = false; // Indica si se está acelerando
+    float previousSpeed = 0; // Velocidad anterior, para disminuir gradualmente
+
+    void Start()
+    {
+        anim = GetComponent<Animator>();
+        anim.SetFloat("Speed", speed);
+    }
+
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.W))
+        {
+            accelerating = true;
+            anim.SetFloat("Direction", -1);
+            anim.SetFloat("Speed", speed);
+            anim.Play("Oruga2", -1, float.NegativeInfinity);
+            Debug.Log("Playing animation");
+        }
+
+        if (Input.GetKeyUp(KeyCode.W))
+        {
+            accelerating = false;
+        }
+
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            accelerating = true;
+            anim.SetFloat("Direction", 1);
+            anim.SetFloat("Speed", -speed);
+            anim.Play("Oruga2", -1, float.NegativeInfinity);
+            Debug.Log("Playing animation");
+        }
+
+        if (Input.GetKeyUp(KeyCode.S))
+        {
+            accelerating = false;
+        }
+
+        if (accelerating)
+        {
+            previousSpeed = speed;
+            speed += acceleration * Time.deltaTime;
+            speed = Mathf.Clamp(speed, 0.1f, 1.0f);
+            anim.speed = speed; // Establecer la velocidad de la animación
+        }
+        else
+        {
+            previousSpeed = Mathf.SmoothStep(previousSpeed, 0, 0.1f);
+            anim.speed = previousSpeed; // Establecer la velocidad de la animación
+        }
+    }
+}
+
+// Update is called once per frame
+/*
+void Update()
+{
+    if (Input.GetKeyDown(KeyCode.W))
+    {
+        Animator anim = gameObject.GetComponent<Animator>();
+        // Reverse animation play
+        anim.SetFloat("Direction", 1);
+        anim.Play("Oruga2", -1, float.NegativeInfinity);
+    }
+
+    if (Input.GetKeyDown(KeyCode.S))
+    {
+        Animator anim = gameObject.GetComponent<Animator>();
+        // Reverse animation play
+        anim.SetFloat("Direction", -1);
+        anim.Play("Oruga2", -1, float.NegativeInfinity);
+    }
+}*/
